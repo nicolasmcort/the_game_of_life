@@ -1,16 +1,12 @@
-# Simulación del Autómata Celular de Conway
+# Simulación Autómata Celular de Conway
 
-Una implementación optimizada del Autómata Celular de John Conway (conocido popularmente como el Juego de la Vida), desarrollada de forma nativa en el lenguaje de programación Rust. El diseño se enfoca en la eficiencia computacional y el análisis cuantitativo de la dinámica poblacional, adaptándose a las directrices de rigor formal propias del ámbito académico de Modelos y Simulación.
+Una implementación optimizada del Autómata Celular de John Conway (conocido popularmente como el Juego de la Vida), desarrollada de forma nativa en el lenguaje de programación Rust. 
 
 ---
 
 ## 1. Acceso y Descarga Directa
 
-Para simplificar el proceso de evaluación y evitar la dependencia de entornos de compilación externos o herramientas de gestión de código por línea de comandos, el repositorio contiene el binario ejecutable precompilado para la arquitectura Windows. El acceso al paquete completo se realiza a través del siguiente enlace comprimido:
-
-### [Descargar Paquete de Distribución (.ZIP)](https://github.com/TU_USUARIO/TU_REPOSITORIO/archive/refs/heads/main.zip)
-
-*Nota: Sustituir la cadena de texto de la dirección URL por los identificadores reales del repositorio de destino tras el despliegue.*
+Para evitar la dependencia de entornos de compilación externos o herramientas de gestión de código por línea de comandos, el repositorio contiene el binario ejecutable precompilado para la arquitectura Windows. 
 
 ---
 
@@ -19,12 +15,12 @@ Para simplificar el proceso de evaluación y evitar la dependencia de entornos d
 La ejecución de la aplicación no requiere la instalación previa del ecosistema de desarrollo de Rust ni de librerías de enlace dinámico de terceros, operando de manera autónoma y portátil.
 
 ### Procedimiento de Inicialización
-1. Descargar el archivo comprimido utilizando el enlace del apartado anterior o mediante la interfaz gráfica de la plataforma (botón `Code` seguido de la opción `Download ZIP`).
+1. Descargar el archivo comprimido mediante la interfaz gráfica de la plataforma (botón `Code` seguido de la opción `Download ZIP`).
 2. Extraer el contenido del archivo comprimido en un directorio local del almacenamiento secundario del sistema de cómputo.
 3. Acceder a la carpeta raíz resultante e iniciar la simulación mediante un doble clic sobre el script de procesamiento por lotes denominado `Iniciar_Simulacion.bat`.
 
 ### Control del Entorno de Simulación
-* **Procesamiento Secuencial:** La aplicación actualiza los estados de forma periódica con un retardo controlado por hardware de 100 milisegundos por transición, garantizando un flujo estable aproximado de 10 iteraciones por segundo.
+* **Procesamiento Secuencial:** La aplicación actualiza los estados de forma periódica con un retardo controlado por hardware de 100 milisegundos por transición.
 * **Finalización del Proceso:** Para interrumpir la simulación y suspender el bucle infinito del programa de forma segura, el usuario debe pulsar la combinación de teclado `Ctrl + C` en la ventana activa de la terminal o realizar el cierre directo de la interfaz de consola.
 
 ---
@@ -45,7 +41,7 @@ La arquitectura del sistema ha sido estructurada de forma modular, segregando el
 A diferencia de los enfoques convencionales fundamentados en arreglos bidimensionales indexados por punteros encadenados, este diseño integra tres técnicas de optimización orientadas al aprovechamiento del hardware de la CPU:
 
 ### Aplanamiento de la Matriz (Vector Unidimensional)
-El plano celular de dimensiones $50 \times 50$ se almacena de forma contigua en un único vector indexado en memoria dinámica (`Vec<u8>`). La asignación espacial se determina mediante la función lineal de transformación de coordenadas $I(x, y) = (y \times L_p) + x$, donde $L_p$ representa el ancho expandido. Esto elimina la fragmentación de la memoria y maximiza la localidad de referencia, asegurando una tasa óptima de aciertos en las líneas de la memoria caché del procesador.
+El plano celular de dimensiones $50 \times 50$ se almacena de forma contigua en un único vector indexado en memoria dinámica (`Vec<u8>`). La asignación espacial se determina mediante la función lineal de transformación de coordenadas $I(x, y) = (y \times L_p) + x$, donde $L_p$ representa el ancho expandido. Esto elimina la fragmentación de la memoria.
 
 ### Técnica de Elementos Centinela (Padding Perimetral)
 Para mitigar el coste computacional asociado a la evaluación constante de bifurcaciones condicionales (operaciones de decisión `if`) en las fronteras de la matriz, el espacio vectorial se expande artificialmente mediante un marco perimetral inactivo, resultando en un volumen real de $52 \times 52$ unidades. El algoritmo restringe la iteración matemática estrictamente a las celdas internas, posibilitando el cálculo de la suma aritmética de las ocho vecindades mediante desplazamientos constantes y lineales sobre el vector, eludiendo fallos por desbordamiento de buffer (*Buffer Overflow*).
@@ -57,7 +53,7 @@ El sistema asigna dos espacios de memoria paralelos denominados `grid_a` (matriz
 
 ## 5. Monitoreo Demográfico en Tiempo Real (Métricas del Modelo)
 
-Con el propósito de proveer un valor analítico y formal a la simulación, el motor lógico efectúa un escrutinio exhaustivo simultáneo a la revaluación de estados. En cada ciclo transicional se registran y computan las siguientes variables agregadas en la interfaz visual de la terminal:
+Con el propósito de proveer un valor analítico y formal a la simulación, en cada ciclo transicional se registran y computan las siguientes variables agregadas en la interfaz visual de la terminal:
 
 * **Población Absoluta:** Recuento cuantificado del volumen total de unidades biológicas activas que coexisten en el sistema.
 * **Tasa de Natalidad (Nacimientos):** Cuantificación de transiciones positivas del estado inactivo ($0$) al estado activo ($1$) motivadas por la regla de densidad crítica.
